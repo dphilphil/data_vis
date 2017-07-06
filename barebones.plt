@@ -10,5 +10,3 @@ set terminal pngcairo
 set output "out.png"
 replot
 quit
-
-
