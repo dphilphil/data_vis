@@ -12,4 +12,4 @@ set term svg enhanced mouse size 600,400
 set output "out.svg"
 
 plot 'x.dat' using 1:2 title 'Qc5' with linespoints ls 1, 'x.dat' using 1:3 title 'Ultrasoft' with linespoints ls 2
-quit
+quit #must always quit to generate .svg, otherwise the image is not generated correctly
