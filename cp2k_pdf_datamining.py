@@ -51,6 +51,40 @@ def datamine_shortestHH():
   output.reshape(-1,1)
   np.savetxt('ShortestHH_2dp.dat',output, fmt="%0.2f") #format used to round values for histogram
 
+def datamine_NH():
+  import numpy as np
+
+  #blank numpy arrays
+  NH1, NH2, NH3 = np.array([]), np.array([]), np.array([])
+
+  #import H on surface and in NH3 separately
+  NinAmmonia = pd.read_csv('NinNH3.dat', sep=r"\s+", names=['atom','x1','y1','z1'])
+  HinAmmonia = pd.read_csv('HinNH3.dat', sep=r"\s+", names=['atom','x2','y2','z2'])
+
+  for i in range((len(NinAmmonia))):
+    #index of H1, H2, H3 in NH3S
+    n = 3*i
+    m = n + 1
+    w = n + 2
+
+    #[row,column]
+    H1x, H1y, H1z = HinAmmonia.iloc[n,1] , HinAmmonia.iloc[n,2], HinAmmonia.iloc[n,3]
+    H2x, H2y, H2z = HinAmmonia.iloc[m,1] , HinAmmonia.iloc[m,2], HinAmmonia.iloc[m,3]
+    H3x, H3y, H3z = HinAmmonia.iloc[w,1] , HinAmmonia.iloc[w,2], HinAmmonia.iloc[w,3]
+
+    #N in Ammonia
+    Nx, Ny, Nz = NinAmmonia.iloc[i,1], NinAmmonia.iloc[i,2], NinAmmonia.iloc[i,3]
+    
+    #calc N-H bond lengths for each of the 3H in NH3 and append
+    NH1 = np.append( NH1, np.sqrt((Nx - H1x)**2 + (Ny-H1y)**2 + (Nz-H1z)**2) )
+    NH2 = np.append( NH2, np.sqrt((Nx - H2x)**2 + (Ny-H2y)**2 + (Nz-H2z)**2) )
+    NH3 = np.append( NH3, np.sqrt((Nx - H3x)**2 + (Ny-H3y)**2 + (Nz-H3z)**2) )
+
+  #savefiles
+  np.savetxt('NH1_BondLength.dat', NH1, fmt="%0.2f") #round
+  np.savetxt('NH2_BondLength.dat', NH2, fmt="%0.2f")
+  np.savetxt('NH3_BondLength.dat', NH3, fmt="%0.2f")
+  
 def histogram():
   rawdata = pd.read_csv('ShortestHH_2dp.dat',names=['HH'])
   rawdata['Freq'] = rawdata.groupby('HH')['HH'].transform('count') #group same values and count frequency
