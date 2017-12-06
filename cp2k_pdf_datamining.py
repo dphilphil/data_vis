@@ -81,9 +81,9 @@ def datamine_NH():
     NH3 = np.append( NH3, np.sqrt((Nx - H3x)**2 + (Ny-H3y)**2 + (Nz-H3z)**2) )
 
   #savefiles
-  np.savetxt('NH1_BondLength.dat', NH1, fmt="%0.2f") #round
-  np.savetxt('NH2_BondLength.dat', NH2, fmt="%0.2f")
-  np.savetxt('NH3_BondLength.dat', NH3, fmt="%0.2f")
+  np.savetxt('NH1_BondLength.dat', NH1, fmt="%0.3f") #round to 3d.p.
+  np.savetxt('NH2_BondLength.dat', NH2, fmt="%0.3f")
+  np.savetxt('NH3_BondLength.dat', NH3, fmt="%0.3f")
   
 def histogram():
   rawdata = pd.read_csv('ShortestHH_2dp.dat',names=['HH'])
