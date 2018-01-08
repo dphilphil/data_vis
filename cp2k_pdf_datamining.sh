@@ -1,18 +1,35 @@
 #!/bin/bash
-#Program for use with cp2k *-pos-1.xyz file type
 
-printf "***** WARNING: Input file cannot contain blank lines. Use :g/^$/d in vim to remove them. *****\n"
+infile="31550.dat"
+#lines in each timestep
+lines_per_step=506
 
-for (( timesteps=0; timesteps<=3; timesteps++ )) #number of MD step
+tot_lines=$(wc -l < $infile)
+iter=$((tot_lines/lines_per_step))
+
+
+list_of_lines="time sed -n "
+suffix="p'"
+comma=","
+pre=" -e '"
+
+
+#using for loop ONLY to generate list of lines to get
+for ((i=1; i<=iter; i++))
 do
-  #H in MH surface
-  #506 = 504 atoms + 2lines between each trajectory
-  pos1=$(echo "203+($timesteps*506)" | bc )
-  pos2=$(echo "$pos1+49")
-  awk 'NR=='$pos1',NR=='$pos2'' *-pos-1.xyz >> ' HinSurfaceLayer.dat' 
-
-  #H in ammonia
-  pos3=$(echo "503+($timesteps*506)" | bc )
-  pos4=$(echo "$pos3+2")
-  awk 'NR=='$pos3',NR=='$pos4'' *-pos-1.xyz >> 'HinNH3.dat' 
+  #end line of each timestep
+  end_line=$((i*506))
+ 
+  #
+  #lines to get
+  l1=$pre$((end_line-303))$comma
+  l3=$((end_line-254))$suffix
+  #
+  
+  list_of_lines+="$l1$l3"
 done
+
+list_of_lines+="  $infile >> HonTop.dat"
+
+#execute generated string
+eval $list_of_lines
