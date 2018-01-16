@@ -39,8 +39,6 @@ tempf=$in'.tempf'
 #make temp file with added blank lines
 sed '1i\'$blank_lines $in >> $tempf
 
-echo $blank_lines
-
 #SEARCH for atoms
 awk 'NR % 504 == 0' $tempf >> $outp_preffix$in
 
