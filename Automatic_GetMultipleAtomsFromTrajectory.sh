@@ -1,10 +1,7 @@
-in='Md_LiH5x5x5L_2LF_w1NH3_25AngBox_NH_NVT_300K-pos-1_20ps.xyz'
-
+in='.xyz'
 
 no_of_atoms=504
 lines_per_step=$((no_of_atoms+2)) #add header
-
-
 
 #grab multiple atoms from a single orig. file
 for ((atom_incrementer=0; atom_incrementer<50; atom_incrementer++))
@@ -24,18 +21,13 @@ do
   #atom count
   atom_loc=$((lines_per_step - atom_loc))
 
-
-  ######
- 
   
   #generate string of \n to append to top of file based on location of atoms
-
   for ((i=1; i<atom_loc; i++))
   do
     blank_lines+='\n'
   done
-  ###
-
+  
   #tempfile name
   tempf=$fname'.tempf'
 
